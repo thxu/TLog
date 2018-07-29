@@ -3,3 +3,6 @@
 ################################################################################
 
 /TLog/packages/Newtonsoft.Json.11.0.2
+/TLog/.vs/TLog/v15
+/TLog/TLog.Core/obj/Debug
+/TLog/TLog.Core/bin/Debug
