@@ -81,7 +81,14 @@ namespace TLog.Core.LogChainBehavior
             {
                 if (HttpContext.Current != null)
                 {
-                    HttpContext.Current.Items.Add(CallContextKey, value);
+                    if (HttpContext.Current.Items[CallContextKey] == null)
+                    {
+                        HttpContext.Current.Items.Add(CallContextKey, value);
+                    }
+                    else
+                    {
+                        HttpContext.Current.Items[CallContextKey] = value;
+                    }
                 }
                 CallContext.LogicalSetData(CallContextKey, value);
             }
