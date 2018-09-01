@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NetFrameWork.Infrastructure</name>
+    </assembly>
+    <members>
+        <member name="T:NetFrameWork.Infrastructure.IAddRepository`1">
+            <summary>
+            IAddRepository{Add单条数据的接口}
+            </summary>
+            <typeparam name="T">T</typeparam>
+        </member>
+        <member name="M:NetFrameWork.Infrastructure.IAddRepository`1.Add(`0)">
+            <summary>
+            Add
+            </summary>
+            <param name="entity">entity</param>
+            <returns>返回结果</returns>
+        </member>
+        <member name="T:NetFrameWork.Infrastructure.IAddsRepository`1">
+            <summary>
+            IAddsRepository
+            </summary>
+            <typeparam name="T">T</typeparam>
+        </member>
+        <member name="M:NetFrameWork.Infrastructure.IAddsRepository`1.Add(System.Collections.Generic.IList{`0})">
+            <summary>
+            Add
+            </summary>
+            <param name="entity">entity</param>
+            <returns>返回结果</returns>
+        </member>
+        <member name="T:NetFrameWork.Infrastructure.IQueryRepository`1">
+            <summary>
+            IQueryRepository{根据主键查询接口}.
+            </summary>
+            <typeparam name="T">T</typeparam>
+        </member>
+        <member name="M:NetFrameWork.Infrastructure.IQueryRepository`1.Query(System.Int64)">
+            <summary>
+            Query
+            </summary>
+            <param name="id">id</param>
+            <returns>返回查询单条数据</returns>
+        </member>
+        <member name="T:NetFrameWork.Infrastructure.IRemoveRepository`1">
+            <summary>
+            IRepository{删除接口}
+            </summary>
+            <typeparam name="T">T</typeparam>
+        </member>
+        <member name="M:NetFrameWork.Infrastructure.IRemoveRepository`1.Remove(`0)">
+            <summary>
+            Remove
+            </summary>
+            <param name="entity">entity</param>
+            <returns>返回结果</returns>
+        </member>
+        <member name="T:NetFrameWork.Infrastructure.IUnitOfWork">
+            <summary>
+            工作单元
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Infrastructure.IUnitOfWork.Command">
+            <summary>
+            执行命令
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Infrastructure.IUnitOfWork.Complete">
+            <summary>
+            提交
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Infrastructure.IUnitOfWork.Rollback">
+            <summary>
+            回滚
+            </summary>
+        </member>
+        <member name="T:NetFrameWork.Infrastructure.IUpdateRepository`1">
+            <summary>
+             IUpdateRepository{更新接口}
+            </summary>
+            <typeparam name="T">T</typeparam>
+        </member>
+        <member name="M:NetFrameWork.Infrastructure.IUpdateRepository`1.Update(`0)">
+            <summary>
+            Update
+            </summary>
+            <param name="entity">entity</param>
+            <returns>返回结果</returns>
+        </member>
+    </members>
+</doc>
