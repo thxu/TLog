@@ -55,13 +55,22 @@
     <Compile Include="AOP\RunningLogAttribute.cs" />
     <Compile Include="AOP\ThrowExAttribute.cs" />
     <Compile Include="Common\Common.cs" />
-    <Compile Include="LogChainBehavior\ClientBehavior.cs" />
-    <Compile Include="LogChainBehavior\ClientBehaviorElement.cs" />
-    <Compile Include="LogChainBehavior\ClientCallInspector.cs" />
-    <Compile Include="LogChainBehavior\LogContext.cs" />
-    <Compile Include="LogChainBehavior\ReceiveBehavior.cs" />
-    <Compile Include="LogChainBehavior\ReceiveCallInitializer.cs" />
-    <Compile Include="Model\Span.cs" />
+    <Compile Include="ContextPropagation\ContextReceiveBehavior.cs" />
+    <Compile Include="ContextPropagation\ContextReceiveInitializer.cs" />
+    <Compile Include="ContextPropagation\ContextSendBehavior.cs" />
+    <Compile Include="ContextPropagation\ContextSendElement.cs" />
+    <Compile Include="ContextPropagation\ContextSendInspector.cs" />
+    <Compile Include="ContextPropagation\LogContext.cs" />
+    <Compile Include="Log\ConfigMonitor.cs" />
+    <Compile Include="Log\ILog.cs" />
+    <Compile Include="Log\InnerTxtLog.cs" />
+    <Compile Include="Log\LogManager.cs" />
+    <Compile Include="Log\TxtLogger.cs" />
+    <Compile Include="Model\Enum.cs" />
+    <Compile Include="Model\ExceptionLog.cs" />
+    <Compile Include="Model\LogBase.cs" />
+    <Compile Include="Model\LogConfig.cs" />
+    <Compile Include="Model\LogSpan.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -6,6 +7,9 @@ using Newtonsoft.Json;
 
 namespace TLog.Core.Common
 {
+    /// <summary>
+    /// 公共类
+    /// </summary>
     public static class Common
     {
         /// <summary>
@@ -17,14 +21,14 @@ namespace TLog.Core.Common
             StringBuilder buid = new StringBuilder();
 
             string hostName = Dns.GetHostName();//本机名   
-            buid.Append(hostName + ";");
+            buid.Append(hostName + "; ");
             IPAddress[] addressList = Dns.GetHostAddresses(hostName);//会返回所有地址，包括IPv4和IPv6   
 
             foreach (IPAddress ip in addressList)
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    buid.Append(ip + ";");
+                    buid.Append(ip + "; ");
                 }
             }
             return buid.ToString();
@@ -45,11 +49,41 @@ namespace TLog.Core.Common
             try
             {
                 JsonSerializerSettings settting = new JsonSerializerSettings { DateFormatString = "yyyy-MM-dd HH:mm:ss" };
-                return JsonConvert.SerializeObject(obj, settting);
+                return JsonConvert.SerializeObject(obj, settting).FormatJsonString();
             }
             catch (InvalidOperationException)
             {
                 return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// 格式化json字符串
+        /// </summary>
+        /// <param name="str">json字符串</param>
+        /// <returns>格式化后的json字符串</returns>
+        public static string FormatJsonString(this string str)
+        {
+            //格式化json字符串
+            JsonSerializer serializer = new JsonSerializer();
+            TextReader tr = new StringReader(str);
+            JsonTextReader jtr = new JsonTextReader(tr);
+            object obj = serializer.Deserialize(jtr);
+            if (obj != null)
+            {
+                StringWriter textWriter = new StringWriter();
+                JsonTextWriter jsonWriter = new JsonTextWriter(textWriter)
+                {
+                    Formatting = Formatting.Indented,
+                    Indentation = 4,
+                    IndentChar = ' '
+                };
+                serializer.Serialize(jsonWriter, obj);
+                return textWriter.ToString();
+            }
+            else
+            {
+                return str;
             }
         }
 

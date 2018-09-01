@@ -2,27 +2,39 @@
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+using TLog.Core.Log;
 using TLog.Core.Model;
 
-namespace TLog.Core.LogChainBehavior
+namespace TLog.Core.ContextPropagation
 {
     /// <summary>
-    /// WCF客户端调用检查器
+    /// 上下文数据传输WCF客户端调用检查器
     /// </summary>
-    public class ClientCallInspector : IClientMessageInspector
+    public class ContextSendInspector : IClientMessageInspector
     {
         /// <summary>
         /// 是否返回调用上下文
         /// </summary>
         public bool IsReturnContext { get; set; }
 
-        public ClientCallInspector() : this(false)
-        { }
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public ContextSendInspector() : this(false) { }
 
-        public ClientCallInspector(bool isReturnContext)
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="isReturnContext">是否返回上下文</param>
+        public ContextSendInspector(bool isReturnContext)
         {
             IsReturnContext = isReturnContext;
         }
+
+        /// <summary>
+        /// 日志段
+        /// </summary>
+        private LogSpan _logSpan;
 
         /// <summary>在将请求消息发送到服务之前，启用消息的检查或修改。</summary>
         /// <param name="request">要发送给服务的消息。</param>
@@ -41,9 +53,10 @@ namespace TLog.Core.LogChainBehavior
         public object BeforeSendRequest(ref Message request, IClientChannel channel)
         {
             string action = request.Headers.GetHeader<string>("Action", request.Headers[0].Namespace);
-            LogContext.Current.LogSpan = Span.Extend(LogContext.Current.LogSpan);
-            LogContext.Current.LogSpan.FunctionName = action;
-            LogContext.Current.LogSpan.ParamIn = request.ToString();
+            _logSpan = LogSpan.Extend(LogContext.Current);
+
+            _logSpan.FunctionName = "WCF Client :" + action;
+            _logSpan.ParamIn = request.ToString();
 
             MessageHeader<LogContext> contextHeader = new MessageHeader<LogContext>(LogContext.Current);
             request.Headers.Add(contextHeader.GetUntypedHeader(LogContext.ContextHeaderLocalName, LogContext.ContextHeaderNamespace));
@@ -55,21 +68,22 @@ namespace TLog.Core.LogChainBehavior
         /// <param name="correlationState">关联状态数据。</param>
         public void AfterReceiveReply(ref Message reply, object correlationState)
         {
-            // 保存当前日志链节点，保证即使开发人员设置了返回日志上下文，也依然不会改变当前的日志链节点
-            var spanTmp = LogContext.Current.LogSpan;
             if (IsReturnContext)
             {
                 if (reply.Headers.FindHeader(LogContext.ContextHeaderLocalName, LogContext.ContextHeaderNamespace) >= 0)
                 {
                     LogContext context = reply.Headers.GetHeader<LogContext>(LogContext.ContextHeaderLocalName, LogContext.ContextHeaderNamespace);
                     LogContext.Current = context;
-                    LogContext.Current.LogSpan = spanTmp;
+
+                    // 覆盖当前日志链节点，保证即使开发人员设置了返回日志上下文，也依然不会改变当前的日志链节点(后期若有返回节点需求干掉下面两行就可)
+                    LogContext.Current.TraceId = _logSpan.TraceId;
+                    LogContext.Current.SpanChain = _logSpan.SpanChain;
                 }
             }
 
-            LogContext.Current.LogSpan.ParamOut = reply.ToString();
-            LogContext.Current.LogSpan.TimeStampEnd = DateTime.Now.Ticks;
-
+            _logSpan.ParamOut = reply.ToString();
+            _logSpan.SpendTime = (DateTime.Now - _logSpan.CreateTime).TotalMilliseconds;
+            LogManager.InnerRunningLog(_logSpan);
         }
     }
 }

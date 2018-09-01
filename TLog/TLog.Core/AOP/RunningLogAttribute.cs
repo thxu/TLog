@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using ArxOne.MrAdvice.Advice;
 using TLog.Core.Common;
-using TLog.Core.LogChainBehavior;
+using TLog.Core.ContextPropagation;
+using TLog.Core.Log;
 using TLog.Core.Model;
 
 namespace TLog.Core.AOP
@@ -15,7 +16,10 @@ namespace TLog.Core.AOP
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true)]
     public class RunningLogAttribute : Attribute, IMethodAdvice
     {
-        private Span _logSpan;
+        /// <summary>
+        /// 调用链
+        /// </summary>
+        private LogSpan _logSpan;
 
         /// <summary>
         /// Implements advice logic.
@@ -24,24 +28,52 @@ namespace TLog.Core.AOP
         /// <param name="context">The method advice context.</param>
         public void Advise(MethodAdviceContext context)
         {
+            // 跳过构造函数和属性(仅记录异常日志，运行日志不记录)
+            if (context.TargetMethod.MemberType == MemberTypes.Constructor
+                || context.TargetMethod.MemberType == MemberTypes.Property
+                || context.TargetMethod.Name.StartsWith("set_")
+                || context.TargetMethod.Name.StartsWith("get_"))
+            {
+                try
+                {
+                    _logSpan = LogSpan.GetCurrentLogSpan();
+                    context.Proceed();
+                }
+                catch (Exception e)
+                {
+                    // 构造函数中，如果不出现异常，则调用链不用延长，出现异常后才延长调用链
+                    var logTmp = LogSpan.Extend(LogContext.Current);
+                    _logSpan.SpanChain = logTmp.SpanChain;
+
+                    _logSpan.FunctionName = $"{context.TargetMethod.Name}---Type={context.TargetMethod.MemberType}";
+                    _logSpan.ParamIn = GetInParam(context);
+                    _logSpan.ParamOut = $"Exception:{e}";
+                    _logSpan.SpendTime = (DateTime.Now - _logSpan.CreateTime).TotalMilliseconds;
+                    LogManager.InnerException(e, "构造函数、属性初始化异常", _logSpan);
+                    throw;
+                }
+                return;
+            }
+
+            // 普通函数，运行日志和异常日志都会记录
             try
             {
-                _logSpan = Span.Extend(LogContext.Current.LogSpan);
-                _logSpan.FunctionName = context.TargetMethod.Name;
-                _logSpan.ParamIn = GetInParam(context);
-                
+                _logSpan = LogSpan.Extend(LogContext.Current);
                 context.Proceed();
 
+                _logSpan.FunctionName = $"{context.TargetMethod.Name}---Type={context.TargetMethod.MemberType}";
+                _logSpan.ParamIn = GetInParam(context);
                 _logSpan.ParamOut = GetOutParam(context);
-                _logSpan.TimeStampEnd = DateTime.Now.Ticks;
-                
+                _logSpan.SpendTime = (DateTime.Now - _logSpan.CreateTime).TotalMilliseconds;
+                LogManager.InnerRunningLog(_logSpan);
             }
             catch (Exception e)
             {
-                _logSpan.ParamOut = $"Exception:{e}";
-                _logSpan.TimeStampEnd = DateTime.Now.Ticks;
-
-                // 记异常日志
+                _logSpan.FunctionName = $"{context.TargetMethod.Name}---Type={context.TargetMethod.MemberType}";
+                _logSpan.ParamIn = GetInParam(context);
+                _logSpan.ParamOut = string.Empty;
+                _logSpan.SpendTime = (DateTime.Now - _logSpan.CreateTime).TotalMilliseconds;
+                LogManager.InnerException(e, "函数执行异常", _logSpan);
 
                 if (context.TargetMethod.IsDefined(typeof(ThrowExAttribute), true))
                 {
@@ -50,10 +82,11 @@ namespace TLog.Core.AOP
 
                 if (context.HasReturnValue)
                 {
+                    // 如果不抛异常到外层，则需要补上函数的返回值
                     var methodInfo = context.TargetMethod as MethodInfo;
                     if (methodInfo == null)
                     {
-                        throw new Exception("未找到目标方法");
+                        throw new Exception("日志组件自动补充返回值，未找到目标方法");
                     }
                     context.ReturnValue = DefaultForType(methodInfo.ReturnType);
                 }

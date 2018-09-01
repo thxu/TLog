@@ -3,9 +3,12 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
-namespace TLog.Core.LogChainBehavior
+namespace TLog.Core.ContextPropagation
 {
-    public class ReceiveBehavior : Attribute, IOperationBehavior
+    /// <summary>
+    /// 上下文接收行为（WCF服务端）
+    /// </summary>
+    public class ContextReceiveBehavior : Attribute, IOperationBehavior
     {
         /// <summary>
         /// 是否返回调用上下文
@@ -33,7 +36,7 @@ namespace TLog.Core.LogChainBehavior
         /// </param>
         public void ApplyDispatchBehavior(OperationDescription operationDescription, DispatchOperation dispatchOperation)
         {
-            dispatchOperation.CallContextInitializers.Add(new ReceiveCallInitializer(IsReturnContext));
+            dispatchOperation.CallContextInitializers.Add(new ContextReceiveInitializer(IsReturnContext));
         }
 
         /// <summary>在操作范围内执行客户端的修改或扩展。</summary>

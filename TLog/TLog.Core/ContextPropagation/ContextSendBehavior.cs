@@ -2,19 +2,28 @@
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
-namespace TLog.Core.LogChainBehavior
+namespace TLog.Core.ContextPropagation
 {
-    public class ClientBehavior : IEndpointBehavior
+    /// <summary>
+    /// 上下文发送行为
+    /// </summary>
+    public class ContextSendBehavior : IEndpointBehavior
     {
         /// <summary>
         /// 是否返回调用上下文
         /// </summary>
         public bool IsReturnContext { get; set; }
 
-        public ClientBehavior() : this(false)
-        { }
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public ContextSendBehavior() : this(false){ }
 
-        public ClientBehavior(bool isReturnContext)
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="isReturnContext">是否返回上下文</param>
+        public ContextSendBehavior(bool isReturnContext)
         {
             IsReturnContext = isReturnContext;
         }
@@ -39,7 +48,7 @@ namespace TLog.Core.LogChainBehavior
         {
             foreach (var operation in endpointDispatcher.DispatchRuntime.Operations)
             {
-                operation.CallContextInitializers.Add(new ReceiveCallInitializer(IsReturnContext));
+                operation.CallContextInitializers.Add(new ContextReceiveInitializer(IsReturnContext));
             }
         }
 
@@ -48,7 +57,7 @@ namespace TLog.Core.LogChainBehavior
         /// <param name="clientRuntime">要自定义的客户端运行时。</param>
         public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
         {
-            clientRuntime.MessageInspectors.Add(new ClientCallInspector(IsReturnContext));
+            clientRuntime.MessageInspectors.Add(new ContextSendInspector(IsReturnContext));
         }
     }
 }

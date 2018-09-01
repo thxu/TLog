@@ -1,21 +1,40 @@
-﻿using System.ServiceModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+using TLog.Core.Log;
 using TLog.Core.Model;
 
-namespace TLog.Core.LogChainBehavior
+namespace TLog.Core.ContextPropagation
 {
-    public class ReceiveCallInitializer : ICallContextInitializer
+    /// <summary>
+    /// 上下文接收处理
+    /// </summary>
+    public class ContextReceiveInitializer : ICallContextInitializer
     {
         /// <summary>
         /// 是否返回调用上下文
         /// </summary>
         public bool IsReturnContext { get; set; }
 
-        public ReceiveCallInitializer() : this(false)
-        { }
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public ContextReceiveInitializer() : this(false) { }
 
-        public ReceiveCallInitializer(bool isReturnContext)
+        /// <summary>
+        /// 日志段
+        /// </summary>
+        //private LogSpan _logSpan;
+
+        private Dictionary<string, LogSpan> _logSpanDic = new Dictionary<string, LogSpan>();
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="isReturnContext">是否返回上下文</param>
+        public ContextReceiveInitializer(bool isReturnContext)
         {
             this.IsReturnContext = isReturnContext;
         }
@@ -30,11 +49,15 @@ namespace TLog.Core.LogChainBehavior
         public object BeforeInvoke(InstanceContext instanceContext, IClientChannel channel, Message message)
         {
             LogContext context = message.Headers.GetHeader<LogContext>(LogContext.ContextHeaderLocalName, LogContext.ContextHeaderNamespace);
+            string action = message.Headers.GetHeader<string>("Action", message.Headers[0].Namespace);
 
             LogContext.Current = context;
-            LogContext.Current.LogSpan.SpanChain += ".1";
-            LogContext.Current.LogSpan.FunctionName = "";
-            LogContext.Current.LogSpan.ParamIn = instanceContext.ToString();
+            LogContext.Current.SpanChain += ".0";
+
+            var _logSpan = LogSpan.Extend(LogContext.Current);
+            _logSpanDic.Add(_logSpan.TraceId, _logSpan);
+            _logSpan.FunctionName = "WCF Service :" + action;
+            _logSpan.ParamIn = message.ToString();
             return LogContext.Current;
         }
 
@@ -44,15 +67,20 @@ namespace TLog.Core.LogChainBehavior
         /// </param>
         public void AfterInvoke(object correlationState)
         {
-            if (this.IsReturnContext)
+            LogContext context = correlationState as LogContext;
+            if (context != null)
             {
-                LogContext context = correlationState as LogContext;
-                if (context != null)
+                var _logSpan = _logSpanDic[context.TraceId];
+                _logSpan.SpendTime = (DateTime.Now - _logSpan.CreateTime).TotalMilliseconds;
+                LogManager.InnerRunningLog(_logSpan);
+                _logSpanDic.Remove(_logSpan.TraceId);
+                if (this.IsReturnContext)
                 {
                     MessageHeader<LogContext> contextHeader = new MessageHeader<LogContext>(context);
                     OperationContext.Current.OutgoingMessageHeaders.Add(contextHeader.GetUntypedHeader(LogContext.ContextHeaderLocalName, LogContext.ContextHeaderNamespace));
                 }
             }
+            
 
             LogContext.Current = null;
         }
