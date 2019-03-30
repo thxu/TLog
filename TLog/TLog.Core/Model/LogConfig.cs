@@ -49,12 +49,12 @@ namespace TLog.Core.Model
                 LogProviderAssembly = ConfigMonitor.ParamConfig.AppSettings.Settings["LogProviderAssembly"].Value.Trim();
                 if (string.IsNullOrWhiteSpace(LogProviderAssembly))
                 {
-                    LogProviderAssembly = "Go.Log.Core";
+                    LogProviderAssembly = "TLog.Core";
                 }
             }
             catch (Exception)
             {
-                LogProviderAssembly = "Go.Log.Core";
+                LogProviderAssembly = "TLog.Core";
             }
 
             try
@@ -62,12 +62,12 @@ namespace TLog.Core.Model
                 LogProviderType = ConfigMonitor.ParamConfig.AppSettings.Settings["LogProviderType"].Value.Trim();
                 if (string.IsNullOrWhiteSpace(LogProviderType))
                 {
-                    LogProviderType = "Go.Log.Core.Log.TxtLogger";
+                    LogProviderType = "TLog.Core.Log.TxtLogger";
                 }
             }
             catch (Exception)
             {
-                LogProviderType = "Go.Log.Core.Log.TxtLogger";
+                LogProviderType = "TLog.Core.Log.TxtLogger";
             }
 
             try
