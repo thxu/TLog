@@ -28,6 +28,7 @@ namespace TLog.Core.AOP
         /// <param name="context">The method advice context.</param>
         public void Advise(MethodAdviceContext context)
         {
+            var paramIn = GetInParam(context);
             // 跳过构造函数和属性(仅记录异常日志，运行日志不记录)
             if (context.TargetMethod.MemberType == MemberTypes.Constructor
                 || context.TargetMethod.MemberType == MemberTypes.Property
@@ -37,6 +38,8 @@ namespace TLog.Core.AOP
                 try
                 {
                     _logSpan = LogSpan.GetCurrentLogSpan();
+                    _logSpan.FunctionName = $"{context.TargetMethod.Name}---(Constructor|Property)";
+                    _logSpan.ParamIn = paramIn;
                     context.Proceed();
                 }
                 catch (Exception e)
@@ -44,9 +47,6 @@ namespace TLog.Core.AOP
                     // 构造函数中，如果不出现异常，则调用链不用延长，出现异常后才延长调用链
                     var logTmp = LogSpan.Extend(LogContext.Current);
                     _logSpan.SpanChain = logTmp.SpanChain;
-
-                    _logSpan.FunctionName = $"{context.TargetMethod.Name}---Type={context.TargetMethod.MemberType}";
-                    _logSpan.ParamIn = GetInParam(context);
                     _logSpan.ParamOut = $"Exception:{e}";
                     _logSpan.SpendTime = (DateTime.Now - _logSpan.CreateTime).TotalMilliseconds;
                     LogManager.InnerException(e, "构造函数、属性初始化异常", _logSpan);
@@ -59,23 +59,22 @@ namespace TLog.Core.AOP
             try
             {
                 _logSpan = LogSpan.Extend(LogContext.Current);
+                _logSpan.FunctionName = $"{context.TargetMethod.Name}";
+                _logSpan.ParamIn = paramIn;
+
                 context.Proceed();
 
-                _logSpan.FunctionName = $"{context.TargetMethod.Name}---Type={context.TargetMethod.MemberType}";
-                _logSpan.ParamIn = GetInParam(context);
                 _logSpan.ParamOut = GetOutParam(context);
                 _logSpan.SpendTime = (DateTime.Now - _logSpan.CreateTime).TotalMilliseconds;
                 LogManager.InnerRunningLog(_logSpan);
             }
             catch (Exception e)
             {
-                _logSpan.FunctionName = $"{context.TargetMethod.Name}---Type={context.TargetMethod.MemberType}";
-                _logSpan.ParamIn = GetInParam(context);
-                _logSpan.ParamOut = string.Empty;
+                _logSpan.ParamOut = $"Exception:{e}";
                 _logSpan.SpendTime = (DateTime.Now - _logSpan.CreateTime).TotalMilliseconds;
                 LogManager.InnerException(e, "函数执行异常", _logSpan);
 
-                if (context.TargetMethod.IsDefined(typeof(ThrowExAttribute), true))
+                if (context.TargetMethod.IsDefined(typeof(CatchExceptionAttribute), true) == false)
                 {
                     throw;
                 }
@@ -103,9 +102,18 @@ namespace TLog.Core.AOP
             Dictionary<string, string> res = new Dictionary<string, string>();
             IList<object> arguments = context.Arguments;
             ParameterInfo[] parameters = context.TargetMethod.GetParameters();
+            if (parameters.Length <= 0)
+            {
+                return string.Empty;
+            }
             for (int i = 0; arguments != null && i < arguments.Count; i++)
             {
                 res.Add(parameters[i].Name, arguments[i].ToJson());
+            }
+
+            if (res.Count <= 0)
+            {
+                return string.Empty;
             }
             return res.ToJson();
         }

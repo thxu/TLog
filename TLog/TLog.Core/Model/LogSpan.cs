@@ -76,18 +76,16 @@ namespace TLog.Core.Model
         /// <returns>新日志节点</returns>
         public static LogSpan Extend(LogContext context)
         {
-            LogSpan node = new LogSpan
-            {
-                TraceId = context.TraceId,
-                SpanChain = context.SpanChain.AddSpanChain(),
-                CreateTime = DateTime.Now,
-                SpendTime = -1,
-                FunctionName = string.Empty,
-                ParamIn = string.Empty,
-                ParamOut = string.Empty,
-                Ip = Common.Common.GetLocalIPAddress(),
-                AppName = LogConfig.AppName
-            };
+            LogSpan node = new LogSpan();
+            node.TraceId = context.TraceId;
+            node.SpanChain = context.SpanChain.AddSpanChain();
+            node.CreateTime = DateTime.Now;
+            node.SpendTime = -1;
+            node.FunctionName = string.Empty;
+            node.ParamIn = string.Empty;
+            node.ParamOut = string.Empty;
+            node.Ip = Common.Common.GetLocalIPAddress();
+            node.AppName = LogConfig.AppName;
 
             LogContext.Current.TraceId = context.TraceId;
             LogContext.Current.SpanChain = node.SpanChain;
@@ -100,18 +98,16 @@ namespace TLog.Core.Model
         /// <returns>新日志节点</returns>
         public static LogSpan GetCurrentLogSpan()
         {
-            LogSpan node = new LogSpan
-            {
-                TraceId = LogContext.Current.TraceId,
-                SpanChain = LogContext.Current.SpanChain,
-                CreateTime = DateTime.Now,
-                SpendTime = -1,
-                FunctionName = string.Empty,
-                ParamIn = string.Empty,
-                ParamOut = string.Empty,
-                Ip = Common.Common.GetLocalIPAddress(),
-                AppName = LogConfig.AppName
-            };
+            LogSpan node = new LogSpan();
+            node.TraceId = LogContext.Current.TraceId;
+            node.SpanChain = LogContext.Current.SpanChain;
+            node.CreateTime = DateTime.Now;
+            node.SpendTime = -1;
+            node.FunctionName = string.Empty;
+            node.ParamIn = string.Empty;
+            node.ParamOut = string.Empty;
+            node.Ip = Common.Common.GetLocalIPAddress();
+            node.AppName = LogConfig.AppName;
             return node;
         }
     }

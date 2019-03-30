@@ -1,6 +1,7 @@
 ﻿using System;
 using TLog.Core.AOP;
 using TLog.Core.ContextPropagation;
+using TLog.Core.Log;
 
 namespace Ser1.Service
 {

@@ -49,12 +49,12 @@ namespace TLog.Core.Model
                 LogProviderAssembly = ConfigMonitor.ParamConfig.AppSettings.Settings["LogProviderAssembly"].Value.Trim();
                 if (string.IsNullOrWhiteSpace(LogProviderAssembly))
                 {
-                    LogProviderAssembly = "TLog.Core";
+                    LogProviderAssembly = "Go.Log.Core";
                 }
             }
             catch (Exception)
             {
-                LogProviderAssembly = "TLog.Core";
+                LogProviderAssembly = "Go.Log.Core";
             }
 
             try
@@ -62,12 +62,12 @@ namespace TLog.Core.Model
                 LogProviderType = ConfigMonitor.ParamConfig.AppSettings.Settings["LogProviderType"].Value.Trim();
                 if (string.IsNullOrWhiteSpace(LogProviderType))
                 {
-                    LogProviderType = "TLog.Core.Log.TxtLogger";
+                    LogProviderType = "Go.Log.Core.Log.TxtLogger";
                 }
             }
             catch (Exception)
             {
-                LogProviderType = "TLog.Core.Log.TxtLogger";
+                LogProviderType = "Go.Log.Core.Log.TxtLogger";
             }
 
             try
@@ -82,12 +82,26 @@ namespace TLog.Core.Model
 
             try
             {
-                double.TryParse(ConfigMonitor.ParamConfig.AppSettings.Settings["DropRate"].Value.Trim(), out var rate);
+                double rate;
+                double.TryParse(ConfigMonitor.ParamConfig.AppSettings.Settings["DropRate"].Value.Trim(), out rate);
                 DropRate = rate;
             }
             catch (Exception)
             {
                 DropRate = 0;
+            }
+
+            try
+            {
+                AppName = ConfigMonitor.ParamConfig.AppSettings.Settings["AppName"].Value.Trim();
+                if (string.IsNullOrWhiteSpace(AppName))
+                {
+                    AppName = string.Empty;
+                }
+            }
+            catch (Exception)
+            {
+                AppName = string.Empty;
             }
         }
     }

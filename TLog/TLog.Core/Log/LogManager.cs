@@ -53,10 +53,19 @@ namespace TLog.Core.Log
         /// 自定义追踪id（注意，此函数会打破原调用链并新建调用链， 建议在http调用的第一个函数或者调度程序的入口函数使用此方法）
         /// </summary>
         /// <param name="traceId"></param>
-        public static void CustomerTraceId(string traceId)
+        public static void CustomerTraceId(string traceId = "")
         {
             LogContext.Current.TraceId = LogSpan.CreateNewTraceId(traceId);
             LogContext.Current.SpanChain = "0";
+        }
+
+        /// <summary>
+        /// 获取当前调用链的追踪id
+        /// </summary>
+        /// <returns>追踪id</returns>
+        private static string GetCurrTraceId()
+        {
+            return LogContext.Current.TraceId;
         }
 
         /// <summary>
@@ -113,7 +122,7 @@ namespace TLog.Core.Log
                 }
                 catch (Exception ex)
                 {
-                    InnerTxtLog.WriteException(ex, "记录运行日志异常");
+                    InnerTxtLog.WriteException(ex, "记录运行日志异常,参数：" + logSpan.ToJson());
                 }
             });
         }
@@ -126,7 +135,7 @@ namespace TLog.Core.Log
         /// <param name="args">请求参数</param>
         /// <param name="returnVal">返回参数</param>
         /// <param name="keyWord">自定义信息</param>
-        public static void Exception(Exception e, string remark, string args = "", string returnVal = "", Dictionary<string, object> keyWord = null)
+        public static void Exception(Exception e, string remark, object args = null, object returnVal = null, Dictionary<string, object> keyWord = null)
         {
             // 调用链+1
             LogSpan logSpan = LogSpan.Extend(LogContext.Current);
@@ -143,8 +152,8 @@ namespace TLog.Core.Log
                         LogLevel = LogLevel.Error,
                     };
                     log.LogSpan.FunctionName = functionName;
-                    log.LogSpan.ParamIn = args ?? string.Empty;
-                    log.LogSpan.ParamOut = returnVal ?? string.Empty;
+                    log.LogSpan.ParamIn = args?.ToJson() ?? string.Empty;
+                    log.LogSpan.ParamOut = returnVal?.ToJson() ?? string.Empty;
                     log.CustomerInfo.Add("Remark", string.IsNullOrWhiteSpace(remark) ? string.Empty : remark);
                     if (!LogFilter(log.LogLevel))
                     {
@@ -153,7 +162,7 @@ namespace TLog.Core.Log
                 }
                 catch (Exception ex)
                 {
-                    InnerTxtLog.WriteException(ex, "记录异常日志异常,参数：" + new { e, remark }.ToJson());
+                    InnerTxtLog.WriteException(ex, "记录异常日志异常,参数：" + new { e, remark, args, returnVal, keyWord }.ToJson());
                 }
             });
         }
@@ -165,7 +174,7 @@ namespace TLog.Core.Log
         /// <param name="args">请求参数</param>
         /// <param name="returnVal">返回参数</param>
         /// <param name="keyWord">自定义信息</param>
-        public static void Info(string content = "", string args = "", string returnVal = "", Dictionary<string, object> keyWord = null)
+        public static void Info(string content = "", object args = null, object returnVal = null, Dictionary<string, object> keyWord = null)
         {
             // 调用链+1
             LogSpan logSpan = LogSpan.Extend(LogContext.Current);
@@ -181,8 +190,8 @@ namespace TLog.Core.Log
                         LogLevel = LogLevel.Info,
                     };
                     log.LogSpan.FunctionName = functionName;
-                    log.LogSpan.ParamIn = args ?? string.Empty;
-                    log.LogSpan.ParamOut = returnVal ?? string.Empty;
+                    log.LogSpan.ParamIn = args?.ToJson() ?? string.Empty;
+                    log.LogSpan.ParamOut = returnVal?.ToJson() ?? string.Empty;
                     log.CustomerInfo.Add("Content", string.IsNullOrWhiteSpace(content) ? string.Empty : content);
                     if (!LogFilter(log.LogLevel))
                     {
@@ -191,7 +200,7 @@ namespace TLog.Core.Log
                 }
                 catch (Exception ex)
                 {
-                    InnerTxtLog.WriteException(ex, "记录运行日志异常");
+                    InnerTxtLog.WriteException(ex, "记录Info日志异常,参数：" + new { content, args, returnVal, keyWord }.ToJson());
                 }
             });
         }
@@ -203,7 +212,7 @@ namespace TLog.Core.Log
         /// <param name="args">请求参数</param>
         /// <param name="returnVal">返回参数</param>
         /// <param name="keyWord">自定义信息</param>
-        public static void Debug(string debugInfo, string args = "", string returnVal = "", Dictionary<string, object> keyWord = null)
+        public static void Debug(string debugInfo, object args = null, object returnVal = null, Dictionary<string, object> keyWord = null)
         {
             // 调用链+1
             LogSpan logSpan = LogSpan.Extend(LogContext.Current);
@@ -219,8 +228,8 @@ namespace TLog.Core.Log
                         LogLevel = LogLevel.Warning,
                     };
                     log.LogSpan.FunctionName = functionName;
-                    log.LogSpan.ParamIn = args ?? string.Empty;
-                    log.LogSpan.ParamOut = returnVal ?? string.Empty;
+                    log.LogSpan.ParamIn = args?.ToJson() ?? string.Empty;
+                    log.LogSpan.ParamOut = returnVal?.ToJson() ?? string.Empty;
                     log.CustomerInfo.Add("DebugInfo", string.IsNullOrWhiteSpace(debugInfo) ? string.Empty : debugInfo);
                     if (!LogFilter(log.LogLevel))
                     {
@@ -229,7 +238,7 @@ namespace TLog.Core.Log
                 }
                 catch (Exception ex)
                 {
-                    InnerTxtLog.WriteException(ex, "记录Debug日志异常");
+                    InnerTxtLog.WriteException(ex, "记录Debug日志异常,参数：" + new { debugInfo, args, returnVal, keyWord }.ToJson());
                 }
             });
         }
@@ -277,11 +286,16 @@ namespace TLog.Core.Log
                     {
                         continue;
                     }
-                    res.Append($"FullName={fullName} 行数={stackFrame.GetFileLineNumber()}" + Environment.NewLine);
+                    res.Append($"{fullName} 行数={stackFrame.GetFileLineNumber()}" + Environment.NewLine);
                 }
             }
 
             return res.ToString();
+        }
+
+        private bool Equals(object obj)
+        {
+            return base.Equals(obj);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace TLog.Core.Log
         /// <summary>
         /// 缓存写文本相关信息
         /// </summary>
-        private static Dictionary<LogLevel, TextCacheModel> _cacheDic = new Dictionary<LogLevel, TextCacheModel>();
+        private static Dictionary<LogLevel, TextCacheModel> cacheDic = new Dictionary<LogLevel, TextCacheModel>();
 
         /// <summary>
         /// 文件大小限制，单位M
@@ -26,11 +26,11 @@ namespace TLog.Core.Log
 
         static TxtLogger()
         {
-            _cacheDic.Add(LogLevel.RunningLog, new TextCacheModel());
-            _cacheDic.Add(LogLevel.Info, new TextCacheModel());
-            _cacheDic.Add(LogLevel.Warning, new TextCacheModel());
-            _cacheDic.Add(LogLevel.Error, new TextCacheModel());
-            _cacheDic.Add(LogLevel.Fatal, new TextCacheModel());
+            cacheDic.Add(LogLevel.RunningLog, new TextCacheModel());
+            cacheDic.Add(LogLevel.Info, new TextCacheModel());
+            cacheDic.Add(LogLevel.Warning, new TextCacheModel());
+            cacheDic.Add(LogLevel.Error, new TextCacheModel());
+            cacheDic.Add(LogLevel.Fatal, new TextCacheModel());
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace TLog.Core.Log
             string path = Path.Combine(GetLogPath(), logLevel.ToString(), $"{time:yyyyMMdd}");
 
             // 获取对应日志的缓存数据
-            TextCacheModel cacheModel = _cacheDic[logLevel];
+            TextCacheModel cacheModel = cacheDic[logLevel];
 
             string baseName = logLevel.ToString();
 
@@ -202,11 +202,11 @@ namespace TLog.Core.Log
         public void Write(LogBase log)
         {
             StringBuilder content = new StringBuilder();
-            content.Append("/**************************************************************************/" + Environment.NewLine);
             content.Append(DateTime.Now.ToString("日志时间:yyyy-MM-dd HH:mm:ss") + Environment.NewLine);
             content.Append("Level:" + log.LogLevel + Environment.NewLine);
-            content.Append(log.ToJson());
-            content.Append(Environment.NewLine);
+            content.Append("--------------------------------Start---------------------------------------" + Environment.NewLine);
+            content.Append(log.ToJson() + Environment.NewLine);
+            content.Append("--------------------------------End-----------------------------------------" + Environment.NewLine);
             content.Append(Environment.NewLine);
             WriteText(log.LogLevel, content.ToString());
         }
@@ -218,11 +218,11 @@ namespace TLog.Core.Log
         public void WriteException(ExceptionLog log)
         {
             StringBuilder content = new StringBuilder();
-            content.Append("/**************************************************************************/" + Environment.NewLine);
             content.Append(DateTime.Now.ToString("日志时间:yyyy-MM-dd HH:mm:ss") + Environment.NewLine);
             content.Append("Level:" + log.LogLevel + Environment.NewLine);
-            content.Append(log.ToJson());
-            content.Append(Environment.NewLine);
+            content.Append("--------------------------------Start---------------------------------------" + Environment.NewLine);
+            content.Append(log.ToJson() + Environment.NewLine);
+            content.Append("--------------------------------End-----------------------------------------" + Environment.NewLine);
             content.Append(Environment.NewLine);
             WriteText(log.LogLevel, content.ToString());
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -10,7 +11,7 @@ namespace TLog.Core.Common
     /// <summary>
     /// 公共类
     /// </summary>
-    public static class Common
+    internal static class Common
     {
         /// <summary>
         /// 获取本机IP地址
@@ -21,14 +22,19 @@ namespace TLog.Core.Common
             StringBuilder buid = new StringBuilder();
 
             string hostName = Dns.GetHostName();//本机名   
-            buid.Append(hostName + "; ");
+            //buid.Append(hostName + "; ");
             IPAddress[] addressList = Dns.GetHostAddresses(hostName);//会返回所有地址，包括IPv4和IPv6   
 
+            if (addressList == null || !addressList.Any())
+            {
+                return string.Empty;
+            }
             foreach (IPAddress ip in addressList)
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
-                    buid.Append(ip + "; ");
+                    return ip + "";
+                    //buid.Append(ip + "; ");
                 }
             }
             return buid.ToString();

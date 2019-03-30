@@ -9,12 +9,12 @@ namespace TLog.Core.Log
     /// <summary>
     /// 内部文本日志，主要记录组件内部的错误日志
     /// </summary>
-    public class InnerTxtLog
+    internal class InnerTxtLog
     {
         /// <summary>
         /// 同步锁
         /// </summary>
-        private static readonly object _syncObj = new object();
+        private static readonly object SyncObj = new object();
 
         /// <summary>
         /// 记录异常
@@ -25,7 +25,7 @@ namespace TLog.Core.Log
         {
             Task.Run((() =>
             {
-                lock (_syncObj)
+                lock (SyncObj)
                 {
                     try
                     {
@@ -58,7 +58,7 @@ namespace TLog.Core.Log
                     }
                     catch (Exception)
                     {
-                        return;
+                        // ignored
                     }
                 }
             }));
