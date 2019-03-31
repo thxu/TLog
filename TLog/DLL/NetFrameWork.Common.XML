@@ -1,0 +1,2019 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NetFrameWork.Common</name>
+    </assembly>
+    <members>
+        <member name="T:NetFrameWork.Common.Cache.Cache">
+            <summary>
+            缓存基类
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Cache.Cache.Locker">
+            <summary>
+            数据锁，保证线程同步
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Cache.Cache.LockApplyTimeOut">
+            <summary>
+            锁超时时间
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Cache.Cache"/> class.
+            实例化读写线程锁
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Cache.Cache.Timeout">
+            <summary>
+            超时时间(缓存时间)
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache.IsExpired(System.DateTime)">
+            <summary>
+            检查超时时间
+            </summary>
+            <param name="lastUpdateTime">lastUpdateTime</param>
+            <returns>rel</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache.AcquireWriterLock">
+            <summary>
+            值获取写线程锁
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache.ReleaseWriterLock">
+            <summary>
+            减少写线程锁
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache.AcquireReaderLock">
+            <summary>
+            获取读线程锁
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache.ReleaseReaderLock">
+            <summary>
+            减少读线程锁
+            </summary>
+        </member>
+        <member name="T:NetFrameWork.Common.Cache.Cache`1">
+            <summary>
+            简单缓存(不需要维护缓存数据)
+            </summary>
+            <typeparam name="TValue">TValue</typeparam>
+        </member>
+        <member name="F:NetFrameWork.Common.Cache.Cache`1.mvalue">
+            <summary>
+            缓存项
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Cache.Cache`1.Value">
+            <summary>
+            缓存Value
+            </summary>
+        </member>
+        <member name="T:NetFrameWork.Common.Cache.Cache`2">
+            <summary>
+            基于数据库的缓存(需要维护缓存数据)
+            </summary>
+            <typeparam name="TKey">TKey</typeparam>
+            <typeparam name="TValue">TValue</typeparam>
+        </member>
+        <member name="F:NetFrameWork.Common.Cache.Cache`2.dataList">
+            <summary>
+            数据列表
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache`2.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Cache.Cache`2"/> class.
+            初始缓存字典
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache`2.Add(`0,`1)">
+            <summary>
+            添加缓存
+            </summary>
+            <param name="key">key</param>
+            <param name="value">value</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache`2.AddRange(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,`1}})">
+            <summary>
+            添加缓存(批量添加)
+            </summary>
+            <param name="range">range</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache`2.Refresh(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,`1}})">
+            <summary>
+            刷新缓存(全量刷新)
+            </summary>
+            <param name="range">range</param>
+        </member>
+        <member name="P:NetFrameWork.Common.Cache.Cache`2.Item(`0)">
+            <summary>
+            缓存值
+            </summary>
+            <param name="key">key</param>
+            <returns>TValue</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache`2.GetValue(`0)">
+            <summary>
+            取出缓存
+            </summary>
+            <param name="key">TValue</param>
+            <returns>TValue</returns>
+        </member>
+        <member name="P:NetFrameWork.Common.Cache.Cache`2.Values">
+            <summary>
+            缓存集合
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache`2.Update(`0,System.Func{`1,System.Boolean})">
+            <summary>
+            保存缓存
+            </summary>
+            <param name="key">key</param>
+            <param name="updateFunc">updateFunc</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache`2.Update(`0,System.Func{`1},System.Func{`1,System.Boolean})">
+            <summary>
+            保存缓存
+            </summary>
+            <param name="key">key</param>
+            <param name="insertFunc">insertFunc</param>
+            <param name="updateFunc">updateFunc</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache`2.Update(`0,`1)">
+            <summary>
+            保存(缓存数据存在就修改不存在就添加)
+            </summary>
+            <param name="key">key</param>
+            <param name="value">value</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache`2.Remove(`0)">
+            <summary>
+            删除缓存
+            </summary>
+            <param name="key">key</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache`2.Clear">
+            <summary>
+            清除缓存
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache`2.AddRanges(System.Collections.Generic.IEnumerable{System.Collections.Generic.KeyValuePair{`0,`1}})">
+            <summary>
+            添加(批量添加)
+            </summary>
+            <param name="range">range</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.Cache`2.AddItem(`0,`1)">
+            <summary>
+            添加项
+            </summary>
+            <param name="key">key</param>
+            <param name="value">value</param>
+        </member>
+        <member name="T:NetFrameWork.Common.Cache.CacheItem`1">
+            <summary>
+            缓存项
+            </summary>
+            <typeparam name="T">T</typeparam>
+        </member>
+        <member name="F:NetFrameWork.Common.Cache.CacheItem`1.mvalue">
+            <summary>
+            T
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.CacheItem`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Cache.CacheItem`1"/> class.
+            </summary>
+            <param name="value">
+            The value.
+            </param>
+        </member>
+        <member name="P:NetFrameWork.Common.Cache.CacheItem`1.Time">
+            <summary>
+            时间
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Cache.CacheItem`1.Value">
+            <summary>
+            T
+            </summary>
+        </member>
+        <member name="T:NetFrameWork.Common.Cache.RepositoryCache`2">
+            <summary>
+            缓存
+            </summary>
+            <typeparam name="TKey">
+            TKey
+            </typeparam>
+            <typeparam name="TValue">
+            TValue
+            </typeparam>
+        </member>
+        <member name="F:NetFrameWork.Common.Cache.RepositoryCache`2.DefaultInterval">
+            <summary>
+            刷新时间
+            单位：毫秒
+            可用配置代替
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Cache.RepositoryCache`2.repository">
+            <summary>
+            仓储接口
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Cache.RepositoryCache`2.cache">
+            <summary>
+            缓存
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Cache.RepositoryCache`2.timer">
+            <summary>
+            刷新Timer控件
+            也可用其他方式实现
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.#ctor(NetFrameWork.Common.Cache.RepositoryCache{`0,`1}.IRepository)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Cache.RepositoryCache`2"/> class.
+            </summary>
+            <param name="repository">
+            The repository.
+            </param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.#ctor(NetFrameWork.Common.Cache.RepositoryCache{`0,`1}.IRepository,NetFrameWork.Common.Cache.Cache{`0,`1})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Cache.RepositoryCache`2"/> class.
+            </summary>
+            <param name="repository">
+            The repository.
+            </param>
+            <param name="cache">
+            The cache.
+            </param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.#ctor(NetFrameWork.Common.Cache.RepositoryCache{`0,`1}.IRepository,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Cache.RepositoryCache`2"/> class.
+            </summary>
+            <param name="repository">
+            The repository.
+            </param>
+            <param name="refreshInterval">
+            The refresh interval.
+            </param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.#ctor(NetFrameWork.Common.Cache.RepositoryCache{`0,`1}.IRepository,NetFrameWork.Common.Cache.Cache{`0,`1},System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Cache.RepositoryCache`2"/> class.
+            </summary>
+            <param name="repository">
+            The repository.
+            </param>
+            <param name="cache">
+            The cache.
+            </param>
+            <param name="refreshInterval">
+            The refresh interval.
+            </param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.#ctor(NetFrameWork.Common.Cache.RepositoryCache{`0,`1}.IRepository,NetFrameWork.Common.Cache.Cache{`0,`1},System.Timers.Timer)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Cache.RepositoryCache`2"/> class.
+            </summary>
+            <param name="repository">
+            The repository.
+            </param>
+            <param name="cache">
+            The cache.
+            </param>
+            <param name="timer">
+            The timer.
+            </param>
+        </member>
+        <member name="P:NetFrameWork.Common.Cache.RepositoryCache`2.Values">
+            <summary>
+            缓存值
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Cache.RepositoryCache`2.Item(`0)">
+            <summary>
+            获取缓存的索引器
+            </summary>
+            <param name="key">
+            TKey
+            </param>
+            <returns>
+            TValue
+            </returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.Refresh">
+            <summary>
+            刷新
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.Add(`0,`1)">
+            <summary>
+            添加
+            </summary>
+            <param name="key">
+            key
+            </param>
+            <param name="value">
+            value
+            </param>
+            <returns>添加结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.Add(`1)">
+            <summary>
+            添加
+            </summary>
+            <param name="value">value</param>
+            <returns>添加结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.Update(`0,`1)">
+            <summary>
+            更新
+            </summary>
+            <param name="key">
+            key
+            </param>
+            <param name="value">
+            value
+            </param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.Remove(`0)">
+            <summary>
+            删除
+            </summary>
+            <param name="key">
+            key
+            </param>
+            <returns>
+            TValue
+            </returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.QueryFromRepository">
+            <summary>
+            QueryFromRepository
+            </summary>
+            <returns>IEnumerable</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.AddModelFromRepository(`1)">
+            <summary>
+            添加
+            </summary>
+            <param name="value">value</param>
+            <returns>添加结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.UpdateModelFromRepository(`1)">
+            <summary>
+            修改
+            </summary>
+            <param name="value">
+            value
+            </param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.DeleteModelFromRepository(`1)">
+            <summary>
+            删除
+            </summary>
+            <param name="value">value</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.TimerElapsed(System.Object,System.Timers.ElapsedEventArgs)">
+            <summary>
+            刷新事件
+            </summary>
+            <param name="sender">
+            sender
+            </param>
+            <param name="e">
+            e
+            </param>
+        </member>
+        <member name="T:NetFrameWork.Common.Cache.RepositoryCache`2.IRepository">
+            <summary>
+            仓储接口(持久化到数据库)
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.IRepository.Query">
+            <summary>
+            查询数据
+            </summary>
+            <returns>数据集</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.IRepository.Insert(`1)">
+            <summary>
+            添加数据
+            </summary>
+            <param name="value">value</param>
+            <returns>返回添加结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.IRepository.Modify(`1)">
+            <summary>
+            修改数据
+            </summary>
+            <param name="value">value</param>
+            <returns>返回修改结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Cache.RepositoryCache`2.IRepository.Delete(`1)">
+            <summary>
+            删除数据
+            </summary>
+            <param name="value">value</param>
+        </member>
+        <member name="T:NetFrameWork.Common.Code.Common">
+            <summary>
+            Common
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.Common.CreateRandomSeed">
+            <summary>
+            随机种子
+            </summary>
+            <returns>结构</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Code.CustomException">
+            <summary>
+            自定义异常
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.CustomException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Code.CustomException"/> class.
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.CustomException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Code.CustomException"/> class.
+            </summary>
+            <param name="message">
+            The message.
+            </param>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.CustomException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Code.CustomException"/> class.
+            </summary>
+            <param name="message">
+            The message.
+            </param>
+            <param name="inner">
+            The inner.
+            </param>
+        </member>
+        <member name="T:NetFrameWork.Common.Code.KeyIdFactory">
+            <summary>
+            主键工厂类
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Code.KeyIdFactory.lastIdentity">
+            <summary>
+            Fields
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Code.KeyIdFactory.locker">
+            <summary>
+            locker
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.KeyIdFactory.NewKeyId">
+            <summary>
+            新的主键ID
+            </summary>
+            <returns>主键ID</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.KeyIdFactory.NewKeyId(System.DateTime)">
+            <summary>
+            新的主键ID
+            </summary>
+            <returns>主键ID</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.KeyIdFactory.NewKeyId(System.String)">
+            <summary>
+            新的主键ID
+            </summary>
+            <param name="code">业务码</param>
+            <returns>主键ID</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.KeyIdFactory.NewKeyId(System.Int32,System.Nullable{System.DateTime})">
+            <summary>
+            新的主键ID
+            </summary>
+            <param name="length">ID长度(不能小于24)</param>
+            <param name="time">创建时间</param>
+            <returns>主键ID</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.KeyIdFactory.NewKeyId(System.String,System.Int32)">
+            <summary>
+            新的主键ID
+            </summary>
+            <param name="code">业务码</param>
+            <param name="length">ID长度(不能小于24)</param>
+            <returns>主键ID</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Code.MonthlyTable">
+            <summary>
+            按月分表
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.MonthlyTable.GetTradeTableDefaultDateTime">
+            <summary>
+            获取交易分表时间
+            </summary>
+            <returns>交易分表时间</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.MonthlyTable.GetTableName(System.String,System.String)">
+            <summary>
+            根据外部订单号获取表名
+            </summary>
+            <param name="tableName">原表名（没有进行分表时的表名)</param>
+            <param name="orderNumber">外部订单号</param>
+            <returns>表名后缀</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.MonthlyTable.GetTableName(System.String,System.DateTime)">
+            <summary>
+            根据时间获取表名(交易版本)
+            </summary>
+            <param name="tableName">原表名（没有进行分表时的表名)</param>
+            <param name="dateTime">时间</param>
+            <returns>表名后缀</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.MonthlyTable.GetTableName(System.String,System.DateTime,System.DateTime)">
+            <summary>
+            根据起止日期,获取分表后的表名列表
+            </summary>
+            <param name="tableName">Name of the table.</param>
+            <param name="start">The start date.</param>
+            <param name="end">The end date.</param>
+            <returns>List&lt;System.String&gt;.</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Code.MyMath">
+            <summary>
+            MyMath
+            </summary>	
+        </member>
+        <member name="M:NetFrameWork.Common.Code.MyMath.AvgSplit(System.Decimal,System.UInt32)">
+            <summary>
+            均分总额，若不能均分则将余数加到最后一个上面
+            </summary>
+            <param name="totalSum">总额</param>
+            <param name="count">要均分的份数</param>
+            <returns>均分结果集合</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.MyMath.Rounded(System.Decimal,System.Int32)">
+            <summary>
+            四舍五入
+            </summary>
+            <param name="value">值</param>
+            <param name="precision">精度</param>
+            <returns>结果</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Code.Operational">
+            <summary>
+            操作信息
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.Operational.Operator">
+            <summary>
+            操作人
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.Operational.OperationContent">
+            <summary>
+            操作内容
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.Operational.OperationDateTime">
+            <summary>
+            操作时间
+            </summary>
+        </member>
+        <member name="T:NetFrameWork.Common.Code.Paging">
+            <summary>
+            分页类
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Code.Paging.pageIndex">
+            <summary>
+            页码
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.Paging.PageIndex">
+            <summary>
+            页码
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Code.Paging.pageSize">
+            <summary>
+            页大小
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.Paging.PageSize">
+            <summary>
+            页大小(默认10页)
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.Paging.RowsCount">
+            <summary>
+            总条数
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Code.Paging.pageCount">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.Paging.PageCount">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Code.Paging.getRowsCount">
+            <summary>
+            是否获取总条数
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.Paging.GetRowsCount">
+            <summary>
+            是否获取总条数
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.Paging.StratRows">
+            <summary>
+            开始索引
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.PagingResult`1.#ctor(NetFrameWork.Common.Code.Paging,System.Collections.Generic.IList{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Code.QueryResult`1"/> class.
+            </summary>
+            <param name="paging">
+            The paging.
+            </param>
+            <param name="data">
+            The data.
+            </param>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.PagingResult`1.Paging">
+            <summary>
+            分页信息
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.PagingResult`1.Data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="T:NetFrameWork.Common.Code.QueryResult`1">
+            <summary>
+            查询结果
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.QueryResult`1.Result">
+            <summary>
+            查询结果
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.QueryResult`1.Data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="T:NetFrameWork.Common.Code.QueueBase">
+            <summary>
+            队列轮循
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Code.QueueBase.timer">
+            <summary>
+            时间控件
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Code.QueueBase"/> class.
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.QueueBase.Interval">
+            <summary>
+            时间间隔
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBase.ThreadProc">
+            <summary>
+            轮循的线程函数
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBase.GetProgramName">
+            <summary>
+            获取程序名称
+            </summary>
+            <returns>默认为空</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBase.GetTaskLogPath">
+            <summary>
+            获取调度执行日志地址
+            </summary>
+            <returns>调度执行日志地址</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBase.GetExceptionLogPath">
+            <summary>
+            获取调度异常日志地址
+            </summary>
+            <returns>调度异常日志地址</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBase.Start">
+            <summary>
+            开始函数
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBase.Stop">
+            <summary>
+            停止函数
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBase.timer_Elapsed(System.Object,System.Timers.ElapsedEventArgs)">
+            <summary>
+            timer执行事件
+            </summary>
+            <param name="sender">sender</param>
+            <param name="e">e</param>
+        </member>
+        <member name="T:NetFrameWork.Common.Code.QueueBaseWhile">
+            <summary>
+            队列轮循(while方式)
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.QueueBaseWhile.Interval">
+            <summary>
+            时间间隔
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBaseWhile.ThreadProc">
+            <summary>
+            轮循的线程函数
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBaseWhile.GetProgramName">
+            <summary>
+            获取程序名称
+            </summary>
+            <returns>默认为空</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBaseWhile.GetTaskLogPath">
+            <summary>
+            获取调度执行日志地址
+            </summary>
+            <returns>调度执行日志地址</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBaseWhile.GetExceptionLogPath">
+            <summary>
+            获取调度异常日志地址
+            </summary>
+            <returns>调度异常日志地址</returns>
+        </member>
+        <member name="F:NetFrameWork.Common.Code.QueueBaseWhile.IsStop">
+            <summary>
+            是否停止
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBaseWhile.Start">
+            <summary>
+            开始函数
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Code.QueueBaseWhile.Stop">
+            <summary>
+            停止函数
+            </summary>
+        </member>
+        <member name="T:NetFrameWork.Common.Code.Result">
+            <summary>
+            结果
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.Result.IsSucceed">
+            <summary>
+            成功/失败
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Code.Result.Message">
+            <summary>
+            消息
+            </summary>
+        </member>
+        <member name="T:NetFrameWork.Common.Code.Result`1">
+            <summary>
+            结果
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="F:NetFrameWork.Common.Code.Result`1.Data">
+            <summary>
+            数据
+            </summary>
+        </member>
+        <member name="T:NetFrameWork.Common.Encrypt.AES">
+            <summary>
+            AES
+            </summary>	
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.AES.Encrypt(System.String)">
+            <summary>
+            加密
+            </summary>
+            <param name="toEncrypt">数据字符</param>
+            <returns>密文</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.AES.Decrypt(System.String)">
+            <summary>
+            解密
+            </summary>
+            <param name="toDecrypt">密文</param>
+            <returns>结果</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Encrypt.Des">
+            <summary>
+            Des加密解密类
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Encrypt.Des.KEY">
+            <summary>
+            Key
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Encrypt.Des.IV">
+            <summary>
+            IV
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.Des.Encrypt(System.String,System.String)">
+            <summary>
+            DES加密方法
+            </summary>
+            <param name="source">原文</param>
+            <param name="key">key</param>
+            <returns>密文</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.Des.Decrypt(System.String,System.String)">
+            <summary>
+            进行DES解密。
+            </summary>
+            <param name="key">key</param>
+            <param name="source">要解密的base64串</param>
+            <returns>已解密的字符串。</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Encrypt.GZipString">
+            <summary>
+            GZipString
+            </summary>	
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.GZipString.GZipCompressString(System.String)">
+            <summary>
+            将传入字符串以GZip算法压缩后，返回Base64编码字符
+            </summary>
+            <param name="rawString">需要压缩的字符串</param>
+            <returns>压缩后的Base64编码的字符串</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.GZipString.Compress(System.Byte[])">
+            <summary>
+            GZip压缩
+            </summary>
+            <param name="rawData">数据包</param>
+            <returns>压缩数据包</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.GZipString.GZipDecompressString(System.String)">
+            <summary>
+            将传入的二进制字符串资料以GZip算法解压缩
+            </summary>
+            <param name="gzipString">经GZip压缩后的二进制字符串</param>
+            <returns>原始未压缩字符串</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.GZipString.Decompress(System.Byte[])">
+            <summary>
+            GZIP解压
+            </summary>
+            <param name="gzipData">数据包</param>
+            <returns>解压数据包</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Encrypt.Md5">
+            <summary>
+            Md5
+            </summary>	
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.Md5.Encrypt32(System.String)">
+            <summary>
+            加密32
+            </summary>
+            <param name="source">数据</param>
+            <returns>密文</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.Md5.Encrypt16(System.String)">
+            <summary>
+            加密16
+            </summary>
+            <param name="source">数据</param>
+            <returns>密文</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.Md5.MD5Encoding(System.String)">
+            <summary>  
+            MD5 加密字符串  
+            </summary>  
+            <param name="rawPass">源字符串</param>  
+            <returns>加密后字符串</returns>  
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.Md5.MD5Encoding(System.String,System.Object)">
+            <summary>  
+            MD5盐值加密  
+            </summary>  
+            <param name="rawPass">源字符串</param>  
+            <param name="salt">盐值</param>  
+            <returns>加密后字符串</returns>  
+        </member>
+        <member name="T:NetFrameWork.Common.Encrypt.SHA1">
+            <summary>
+            SHA1
+            </summary>	
+        </member>
+        <member name="M:NetFrameWork.Common.Encrypt.SHA1.Encrypt(System.String)">
+            <summary>
+            加密
+            </summary>
+            <param name="source">数据</param>
+            <returns>密文</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Exception.CustomException">
+            <summary>
+            自定义异常
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Exception.CustomException.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Exception.CustomException"/> class.
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Exception.CustomException.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Exception.CustomException"/> class.
+            </summary>
+            <param name="message">
+            The message.
+            </param>
+        </member>
+        <member name="M:NetFrameWork.Common.Exception.CustomException.#ctor(System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Exception.CustomException"/> class.
+            </summary>
+            <param name="message">
+            The message.
+            </param>
+            <param name="inner">
+            The inner.
+            </param>
+        </member>
+        <member name="T:NetFrameWork.Common.Extension.ConvertExtension">
+            <summary>
+            类型转化扩展
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.ConvertExtension.ConvertHelper(System.Object,System.Type)">
+            <summary>
+            The convert helper.
+            </summary>
+            <param name="value">
+            The value.
+            </param>
+            <param name="conversionType">
+            The conversion type.
+            </param>
+            <returns>
+            The <see cref="T:System.Object"/>.
+            </returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.ConvertExtension.ConvertToDecimalNull(System.Object)">
+            <summary>
+            The convert to decimal null.
+            </summary>
+            <param name="targetObj">
+            The target obj.
+            </param>
+            <returns>
+            The <see cref="T:System.Decimal"/>.
+            </returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.ConvertExtension.ConvertToIntNull(System.Object)">
+            <summary>
+            The convert to int null.
+            </summary>
+            <param name="targetObj">
+            The target obj.
+            </param>
+            <returns>
+            The <see cref="T:System.Int32"/>.
+            </returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.ConvertExtension.ConvertToString(System.Object)">
+            <summary>
+            The convert to string.
+            </summary>
+            <param name="obj">
+            The obj.
+            </param>
+            <returns>
+            The <see cref="T:System.String"/>.
+            </returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.ConvertExtension.ListToDataTable``1(System.Collections.Generic.List{``0})">
+            <summary>
+            将泛类型集合List类转换成DataTable
+            </summary>
+            <param name="entitys">泛类型集合</param>
+            <typeparam name="T">T</typeparam>
+            <returns>DataTable</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Extension.DataExtension">
+            <summary>
+            数据扩展
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.DataExtension.ToList``1(System.Data.IDataReader)">
+            <summary>
+            ToList
+            </summary>
+            <typeparam name="T">T</typeparam>
+            <param name="reader">reader</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.DataExtension.ToList``1(System.Data.DataTable)">
+            <summary>
+            ToList
+            </summary>
+            <typeparam name="T">T</typeparam>
+            <param name="dt">dt</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.DataExtension.ToList``1(System.Data.DataSet)">
+            <summary>
+            ToList
+            </summary>
+            <typeparam name="T">T</typeparam>
+            <param name="ds">ds</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.DataExtension.ToList``1(System.Data.DataSet,System.Int32)">
+            <summary>
+            ToList
+            </summary>
+            <typeparam name="T">T</typeparam>
+            <param name="ds">ds</param>
+            <param name="dataTableIndex">dataTableIndex</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.DataExtension.ToModel``1(System.Data.IDataReader)">
+            <summary>
+            ToModel
+            </summary>
+            <typeparam name="T">T</typeparam>
+            <param name="reader">reader</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.DataExtension.ToModel``1(System.Data.DataTable)">
+            <summary>
+            ToModel
+            </summary>
+            <typeparam name="T">T</typeparam>
+            <param name="dt">dt</param>
+            <returns>T</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.DataExtension.ToModel``1(System.Data.DataSet,System.Int32)">
+            <summary>
+            ToModel
+            </summary>
+            <typeparam name="T">T</typeparam>
+            <param name="ds">ds</param>
+            <param name="dataTableIndex">dataTableIndex</param>
+            <returns>T</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Extension.IEnumerableExtension">
+            <summary>
+            Linq扩展
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Join(System.Collections.Generic.IEnumerable{System.String},System.String)">
+            <summary>
+            根据字符串拆分数组
+            </summary>
+            <param name="source">
+            要拆分的数组
+            </param>
+            <param name="separator">
+            拆分符
+            </param>
+            <returns>
+            字符串
+            </returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Join``1(System.Collections.Generic.IEnumerable{``0},System.String,System.Func{``0,System.String})">
+            <summary>
+            根据字符串拆分数组
+            </summary>
+            <typeparam name="TSource">类型</typeparam>
+            <param name="source"> 要拆分的数组</param>
+            <param name="separator">拆分符</param>
+            <param name="map">拆分条件</param>
+            <returns>字符串 <see cref="T:System.String"/></returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Sort``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.KeyValuePair{System.Boolean,System.Func{``0,System.Object}}[])">
+            <summary>
+            多条件排序扩展方法
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="sources">sources</param>
+            <param name="keySelector">keySelector</param>
+            <returns>排序结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.OrderBy``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,``1})">
+            <summary>
+            升序
+            </summary>
+            <typeparam name="TSource">数据源类型</typeparam>
+            <typeparam name="TKey">排序字段类型</typeparam>
+            <param name="sources">数据</param>
+            <param name="predicate">条件</param>
+            <param name="keySelector">排序条件</param>
+            <returns>最终数据</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.OrderByDescending``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,``1})">
+            <summary>
+            降序
+            </summary>
+            <typeparam name="TSource">数据源类型</typeparam>
+            <typeparam name="TKey">排序字段类型</typeparam>
+            <param name="sources">数据</param>
+            <param name="predicate">条件</param>
+            <param name="keySelector">排序条件</param>
+            <returns>最终数据</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.OrderBy``1(System.Linq.IQueryable{``0},System.String,System.Boolean)">
+            <summary>
+            扩展Linq的OrderBy方法，实现根据属性和顺序(倒序)进行排序，调用和linq的方法一致
+            </summary>
+            <typeparam name="TEntity">需要排序的实体对象</typeparam>
+            <param name="source">结果集信息</param>
+            <param name="propertyStr">动态排序的属性名(从前台获取)</param>
+            <param name="isDesc">排序方式，不传递表示顺序，默认true，false表示倒序</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.MaxElement``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+             获取最大值的当前对象
+            </summary>
+            <typeparam name="TElement">TElement</typeparam>
+            <typeparam name="TData">TData</typeparam>
+            <param name="source">source</param>
+            <param name="selector">selector</param>
+            <returns>MaxValue</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.MinElement``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+             获取最小值的当前对象
+            </summary>
+            <typeparam name="TElement">TElement</typeparam>
+            <typeparam name="TData">TData</typeparam>
+            <param name="source">source</param>
+            <param name="selector">selector</param>
+            <returns>MaxValue</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Decimal})">
+            <summary>
+            求最大值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最大值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Double})">
+            <summary>
+            求最大值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最大值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Int32})">
+            <summary>
+            求最大值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最大值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Int64})">
+            <summary>
+            求最大值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最大值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Single})">
+            <summary>
+            求最大值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最大值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Decimal}})">
+            <summary>
+            求最大值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最大值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Double}})">
+            <summary>
+            求最大值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最大值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Int32}})">
+            <summary>
+            求最大值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最大值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Int64}})">
+            <summary>
+            求最大值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最大值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Max``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Single}})">
+            <summary>
+            求最大值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最大值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Decimal})">
+            <summary>
+            求最小值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最小值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Double})">
+            <summary>
+            求最小值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最小值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Int32})">
+            <summary>
+            求最小值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最小值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Int64})">
+            <summary>
+            求最小值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最小值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Single})">
+            <summary>
+            求最小值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最小值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Decimal}})">
+            <summary>
+            求最小值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最小值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Double}})">
+            <summary>
+            求最小值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最小值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Int32}})">
+            <summary>
+            求最小值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最小值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Int64}})">
+            <summary>
+            求最小值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最小值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Min``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Single}})">
+            <summary>
+            求最小值
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>最小值</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Decimal})">
+            <summary>
+            求和
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>和</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Double})">
+            <summary>
+            求和
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>和</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Int32})">
+            <summary>
+            求和
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>和</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Int64})">
+            <summary>
+            求和
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>和</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Single})">
+            <summary>
+            求和
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>和</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Decimal}})">
+            <summary>
+            求和
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>和</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Double}})">
+            <summary>
+            求和
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>和</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Int32}})">
+            <summary>
+            求和
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>和</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Int64}})">
+            <summary>
+            求和
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>和</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Sum``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean},System.Func{``0,System.Nullable{System.Single}})">
+            <summary>
+            求和
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <param name="selector">selector</param>
+            <returns>和</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Repeat``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Boolean})">
+            <summary>
+            是否存在重复
+            </summary>
+            <typeparam name="TSource">TSource</typeparam>
+            <param name="source">source</param>
+            <param name="predicate">predicate</param>
+            <returns>结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Repeat``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            根据某个字段获取重复数据
+            </summary>
+            <typeparam name="TSource">数据类型</typeparam>
+            <typeparam name="Tkey">字段类型</typeparam>
+            <param name="source">数据源</param>
+            <param name="predicate">表达式</param>
+            <returns>结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.AllRepeat``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            所有的数据是否都是重复的
+            </summary>
+            <typeparam name="TSource">数据类型</typeparam>
+            <typeparam name="Tkey">字段类型</typeparam>
+            <param name="source">数据源</param>
+            <param name="predicate">表达式</param>
+            <returns>结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.Comparer``1(System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEqualityComparer{``0})">
+            <summary>
+            比较
+            </summary>
+            <typeparam name="TSource">数据源</typeparam>
+            <param name="first">第一个</param>
+            <param name="second">第二个</param>
+            <param name="comparer">比较器</param>
+            <returns>结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.IEnumerableExtension.ComparableElement``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Boolean)">
+            <summary>
+             获取最大or最小值的当前对象
+            </summary>
+            <typeparam name="TElement">TElement</typeparam>
+            <typeparam name="TData">TData</typeparam>
+            <param name="source">source</param>
+            <param name="selector">selector</param>
+            <param name="isMax">最大还是最小</param>
+            <returns>MaxValue</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Extension.SerializerExtension">
+            <summary>
+            序列化
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.SerializerExtension.SerializeObject(System.Object)">
+            <summary>
+            JSON序列化
+            </summary>
+            <param name="obj">对象</param>
+            <returns>JSON字符串</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.SerializerExtension.DeserializeObject``1(System.String)">
+            <summary>
+            反序列化
+            </summary>
+            <typeparam name="T">对象</typeparam>
+            <param name="json">JSON字符串</param>
+            <returns>对象</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.SerializerExtension.DeserializeObject(System.String)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="json">JSON字符串</param>
+            <returns>对象</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.SerializerExtension.DeepCopy``1(``0)">
+            <summary>
+            XML序列化方式深复制
+            </summary>
+            <typeparam name="T">类型</typeparam>
+            <param name="obj">对象</param>
+            <returns>复制对象</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Extension.StringExtension">
+            <summary>
+            字符串相关扩展方法
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.StringExtension.IsNullOrEmpty(System.String)">
+            <summary>
+            字符串是否为空
+            </summary>
+            <param name="val">要判断的字符串</param>
+            <returns>判断结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Extension.StringExtension.IsNullOrWhiteSpace(System.String)">
+            <summary>
+            字符串是否为空或者空白字符串
+            </summary>
+            <param name="val">要判断的字符串</param>
+            <returns>判断结果</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Utility.HttpHelper">
+            <summary>InnerException
+            HTTP请求帮助类
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Utility.HttpHelper.index">
+            <summary>
+            索引
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Utility.HttpHelper.KeepAlive">
+            <summary>
+            获取或设置一个值，该值指示是否与 Internet 资源建立持久性连接。
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Utility.HttpHelper.Expect100Continue">
+            <summary>
+            获取或设置一个 System.Boolean 值，该值确定是否使用 100-Continue 行为。
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Utility.HttpHelper.UserAgent">
+            <summary>
+            UserAgent
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Utility.HttpHelper.AcceptLanguage">
+            <summary>
+            AcceptLanguage
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Utility.HttpHelper.Accept">
+            <summary>
+            Accept
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Utility.HttpHelper.AcceptEncoding">
+            <summary>
+            AcceptEncoding
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Utility.HttpHelper.AcceptCharset">
+            <summary>
+            AcceptCharset
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Utility.HttpHelper.ContentType">
+            <summary>
+            ContentType
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Utility.HttpHelper.Cookie">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.#ctor">
+            <summary>
+            实例化
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.#ctor(System.Net.CookieContainer)">
+            <summary>
+            实例化
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.HttpGet(System.String,System.String,System.Text.Encoding,System.Boolean,System.Boolean,System.Int32)">
+            <summary>
+            使用get方式访问目标网页，返回html页面
+            </summary>
+            <param name="targetURL">请求地址</param>
+            <param name="referer">获取或设置值的引用页HTTP头</param>
+            <param name="encoding">encoding</param>
+            <param name="requestClientIp">是否使用IP欺骗</param>
+            <param name="isUseProxyIP">是否使用代理IP</param>
+            <param name="timeout">超时时间</param>
+            <returns>html</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.HttpXMLGet(System.String,System.String,System.Text.Encoding,System.Boolean,System.Boolean,System.Int32)">
+            <summary>
+            使用get方式访问目标网页，返回html页面
+            </summary>
+            <param name="targetURL">url</param>
+            <param name="referer">referer</param>
+            <param name="encoding">encoding</param>
+            <param name="requestClientIp">是否使用IP欺骗</param>
+            <param name="isUseProxyIP">是否使用代理IP</param>
+            <param name="timeout">超时时间</param>
+            <returns>html</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.HttpByteGet(System.String,System.String,System.Boolean,System.Boolean,System.Int32)">
+            <summary>
+            使用get方式访问目标网页，返回图片字节数组
+            </summary>
+            <param name="targetURL">url</param>
+            <param name="referer">referer</param>
+            <param name="requestClientIp">是否使用IP欺骗</param>
+            <param name="isUseProxyIP">是否使用代理IP</param>
+            <param name="timeout">超时时间</param>
+            <returns>html</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.HttpBitmapGet(System.String,System.String,System.Boolean,System.Boolean,System.Int32)">
+            <summary>
+            使用get方式访问目标网页，返回图片
+            </summary>
+            <param name="targetURL">url</param>
+            <param name="referer">referer</param>
+            <param name="requestClientIp">是否使用IP欺骗</param>
+            <param name="isUseProxyIP">是否使用代理IP</param>
+            <param name="timeout">超时时间</param>
+            <returns>html</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.HttpPost(System.String,System.String,System.String,System.Text.Encoding,System.Boolean,System.Boolean,System.Int32)">
+            <summary>
+            使用post方式访问目标网页，返回html页面
+            </summary>
+            <param name="targetURL">url</param>
+            <param name="referer">referer</param>
+            <param name="parametrs">parametrs</param>
+            <param name="encoding">encoding</param>
+            <param name="requestClientIp">是否使用Ip欺骗</param>
+            <param name="isUseProxyIP">是否使用代理IP</param>
+            <param name="timeout">超时时间</param>
+            <returns>html</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.HttpXMLPost(System.String,System.String,System.String,System.Text.Encoding,System.Boolean,System.Boolean,System.Int32)">
+            <summary>
+            使用XML post方式访问目标网页，返回html页面
+            </summary>
+            <param name="targetURL">url</param>
+            <param name="referer">referer</param>
+            <param name="parametrs">parametrs</param>
+            <param name="encoding">encoding</param>
+            <param name="requestClientIp">是否使用Ip欺骗</param>
+            <param name="isUseProxyIP">是否使用代理IP</param>
+            <param name="timeout">超时时间</param>
+            <returns>html</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.GetUseAgent">
+            <summary>
+            获取 UseAgent
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.RandomUserAgent">
+            <summary>
+            随机产生头信息并随机产生版本
+            </summary>
+            <returns>返回头信息</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.RandomBrowserMark(System.Boolean)">
+            <summary>
+            随机产生两个字母
+            </summary>
+            <param name="isUorL">需要大写形式还是小写形式（true为大写）</param>
+            <returns></returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.GetRequestIP">
+            <summary>
+            获取一个请求IP（随机生成C类IP地址：192.168.0.0到192.168.255.255 ）
+            </summary>
+            <returns>C类IP地址</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.GetRandom(System.Int32,System.Int32)">
+            <summary>
+            获得一个随机数
+            </summary>
+            <param name="minValue">随机数最小值</param>
+            <param name="maxValue">随机数最大值</param>
+            <returns>随机数</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.GetCookieContainer(System.Collections.Generic.List{System.Net.Cookie})">
+            <summary>
+            根据cookie获取CookieContainer
+            </summary>
+            <param name="cookieList">cookieList</param>
+            <returns>CookieContainer</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.GetAllCookies(System.Net.CookieContainer)">
+            <summary>
+            获取所有cookie
+            </summary>
+            <param name="cc">CookieContainer</param>
+            <returns>CookieList</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.Chaos_GetRandomSeed">
+            <summary>
+            加密随机数生成器，生成随机种子
+            </summary>
+            <returns>随机种子</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.RandomHeadersInfo(NetFrameWork.Common.Utility.HttpHelper)">
+            <summary>
+            随机头信息选择器（仅限国航上使用）
+            </summary>
+            <param name="helper">helper</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.RandomStrNum">
+            <summary>
+            随机数字产生
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.HttpHelper.UrlEncode(System.String)">
+            <summary>
+            转换成URL格式
+            </summary>
+            <param name="value">value</param>
+            <returns>value</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Utility.ValidateCode">
+            <summary>
+            生成验证码的类
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Utility.ValidateCode.MaxLength">
+            <summary>
+            验证码的最大长度
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Utility.ValidateCode.MinLength">
+            <summary>
+            验证码的最小长度
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Utility.ValidateCode.length">
+            <summary>
+            验证码长度
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.ValidateCode.#ctor(System.Int32)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="length">验证码长度</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.ValidateCode.CreateValidateCode">
+            <summary>
+            生成验证码
+            </summary>
+            <returns>验证码</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Utility.ValidateCode.CreateValidateGraphic(System.String)">
+            <summary>
+            创建验证码的图片
+            </summary>
+            <param name="validateCode">验证码</param>
+            <returns>数组</returns>
+        </member>
+        <member name="P:NetFrameWork.Common.Utility.ValidateCode.ImageWidth">
+            <summary>
+            设置或获取验证码图片的长度
+            //return (int)(validateNumLength * 12.0);
+            </summary>
+        </member>
+        <member name="P:NetFrameWork.Common.Utility.ValidateCode.ImageHeight">
+            <summary>
+            设置或获取验证码的高度
+             return 22.5;
+            </summary>
+        </member>
+        <member name="T:NetFrameWork.Common.Write.LogService">
+            <summary>
+            写入文本日志
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Write.LogService.obj">
+            <summary>
+            The obj.
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.LogService.WriteLog(System.Exception,System.String)">
+            <summary>
+            记录异常文本日志
+            </summary>
+            <param name="ex">异常</param>
+            <param name="remark">备注</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.LogService.WriteLog(System.Exception,System.String,System.String)">
+            <summary>
+            记录异常文本日志
+            </summary>
+            <param name="ex">异常</param>
+            <param name="path">日志路径</param>
+            <param name="remark">备注</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.LogService.WriteLog(System.String,System.Exception,System.String,System.String)">
+            <summary>
+            记录异常文本日志
+            </summary>
+            <param name="describe">错误描述</param>
+            <param name="ex">异常</param>
+            <param name="path">日志路径</param>
+            <param name="remark">备注</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.LogService.CreateErrorMessage(System.Exception,System.String)">
+            <summary>
+            创建异常消息
+            </summary>
+            <param name="ex">异常信息</param>
+            <param name="remark">备注</param>
+            <returns>结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.LogService.WriteLog(System.String)">
+            <summary>
+            记录文本日志
+            </summary>
+            <param name="content">日志内容</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.LogService.WriteLog(System.String,System.String)">
+            <summary>
+            记录文本日志
+            </summary>
+            <param name="content">日志内容</param>
+            <param name="path">日志路径</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.LogService.SaveLog(System.String,System.Object,System.Object,System.String)">
+            <summary>
+            记录日志
+            </summary>
+            <param name="method">调用方法(必填)</param>
+            <param name="request">请求参数</param>
+            <param name="response">输出参数</param>
+            <param name="saveFolder">保存文件夹，默认为CallLog</param>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.LogService.Log(System.String,System.String)">
+            <summary>
+            The log.
+            </summary>
+            <param name="content">
+            The content.
+            </param>
+            <param name="path">
+            The path.
+            </param>
+            <returns>
+            The 
+            </returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.LogService.GetLogPath">
+            <summary>
+            获取日志路径
+            </summary>
+            <returns>路径</returns>
+        </member>
+        <member name="T:NetFrameWork.Common.Write.TextWriter">
+            <summary>
+            写入文本
+            </summary>
+        </member>
+        <member name="F:NetFrameWork.Common.Write.TextWriter.fileName">
+            <summary>
+            写入文件路径
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.TextWriter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Write.TextWriter"/> class.
+            </summary>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.TextWriter.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NetFrameWork.Common.Write.TextWriter"/> class.
+            </summary>
+            <param name="fileName">
+            The file name.
+            </param>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.TextWriter.WriteLog(System.String)">
+            <summary>
+            写入日志
+            </summary>
+            <param name="logInfo">内容 </param>
+            <returns>结果</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.TextWriter.GetFileMainPath(System.DateTime)">
+            <summary>
+            获取文件路径
+            </summary>
+            <param name="timeStamp">timeStamp</param>
+            <returns>path</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.TextWriter.GetLastAccessFile(System.String,System.DateTime)">
+            <summary>
+            获取最后写入日志的文件
+            </summary>
+            <param name="path">路径</param>
+            <param name="timeStamp">timeStamp</param>
+            <returns>FileInfo</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.TextWriter.GetFileStream(System.IO.FileInfo,System.String,System.DateTime)">
+            <summary>
+            获取文件流
+            </summary>
+            <param name="fileInfo">lastFile</param>
+            <param name="path">path</param>
+            <param name="timeStamp">timeStamp</param>
+            <returns>FileStream</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.TextWriter.CreateFile(System.String,System.String)">
+            <summary>
+            创建文件
+            </summary>
+            <param name="path">路径</param>
+            <param name="fileName1">名称</param>
+            <returns>FileStream</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.TextWriter.GetFileMainName(System.DateTime)">
+            <summary>
+            获取文件名称
+            </summary>
+            <param name="timeStamp">timeStamp</param>
+            <returns>HHmmssfff</returns>
+        </member>
+        <member name="M:NetFrameWork.Common.Write.TextWriter.IsOutOfTimeMaxLength(System.DateTime,System.DateTime)">
+            <summary>
+            IsOutOfTimeMaxLength
+            </summary>
+            <param name="creationTime">creationTime</param>
+            <param name="timeStamp">timeStamp</param>
+            <returns>bool</returns>
+        </member>
+    </members>
+</doc>

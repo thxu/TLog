@@ -11,7 +11,7 @@ namespace TLog.Core.Common
     /// <summary>
     /// 公共类
     /// </summary>
-    internal static class Common
+    public static class Common
     {
         /// <summary>
         /// 获取本机IP地址
