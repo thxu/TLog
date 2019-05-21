@@ -1,7 +1,7 @@
-﻿using System;
+﻿using ArxOne.MrAdvice.Advice;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using ArxOne.MrAdvice.Advice;
 using TLog.Core.Common;
 using TLog.Core.ContextPropagation;
 using TLog.Core.Log;
@@ -56,40 +56,15 @@ namespace TLog.Core.AOP
             }
 
             // 普通函数，运行日志和异常日志都会记录
-            try
-            {
-                _logSpan = LogSpan.Extend(LogContext.Current);
-                _logSpan.FunctionName = $"{context.TargetMethod.Name}";
-                _logSpan.ParamIn = paramIn;
+            _logSpan = LogSpan.Extend(LogContext.Current);
+            _logSpan.FunctionName = $"{context.TargetMethod.Name}";
+            _logSpan.ParamIn = paramIn;
 
-                context.Proceed();
+            context.Proceed();
 
-                _logSpan.ParamOut = GetOutParam(context);
-                _logSpan.SpendTime = (DateTime.Now - _logSpan.CreateTime).TotalMilliseconds;
-                LogManager.InnerRunningLog(_logSpan);
-            }
-            catch (Exception e)
-            {
-                _logSpan.ParamOut = $"Exception:{e}";
-                _logSpan.SpendTime = (DateTime.Now - _logSpan.CreateTime).TotalMilliseconds;
-                LogManager.InnerException(e, "函数执行异常", _logSpan);
-
-                if (context.TargetMethod.IsDefined(typeof(CatchExceptionAttribute), true) == false)
-                {
-                    throw;
-                }
-
-                if (context.HasReturnValue)
-                {
-                    // 如果不抛异常到外层，则需要补上函数的返回值
-                    var methodInfo = context.TargetMethod as MethodInfo;
-                    if (methodInfo == null)
-                    {
-                        throw new Exception("日志组件自动补充返回值，未找到目标方法");
-                    }
-                    context.ReturnValue = DefaultForType(methodInfo.ReturnType);
-                }
-            }
+            _logSpan.ParamOut = GetOutParam(context);
+            _logSpan.SpendTime = (DateTime.Now - _logSpan.CreateTime).TotalMilliseconds;
+            LogManager.InnerRunningLog(_logSpan);
         }
 
         /// <summary>
@@ -97,7 +72,7 @@ namespace TLog.Core.AOP
         /// </summary>
         /// <param name="context">函数调用上下文</param>
         /// <returns>输入参数json字符串</returns>
-        private string GetInParam(MethodAdviceContext context)
+        public static string GetInParam(MethodAdviceContext context)
         {
             Dictionary<string, string> res = new Dictionary<string, string>();
             IList<object> arguments = context.Arguments;
@@ -123,23 +98,13 @@ namespace TLog.Core.AOP
         /// </summary>
         /// <param name="context">函数调用上下文</param>
         /// <returns>返回参数</returns>
-        private string GetOutParam(MethodAdviceContext context)
+        public static string GetOutParam(MethodAdviceContext context)
         {
             if (!context.HasReturnValue)
             {
                 return null;
             }
             return context.ReturnValue.ToString();
-        }
-
-        /// <summary>
-        /// 生成类型默认值
-        /// </summary>
-        /// <param name="targetType">类型</param>
-        /// <returns>类型默认值</returns>
-        private static object DefaultForType(Type targetType)
-        {
-            return targetType.IsValueType ? Activator.CreateInstance(targetType) : null;
         }
     }
 }

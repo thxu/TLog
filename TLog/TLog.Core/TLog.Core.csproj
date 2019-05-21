@@ -55,7 +55,6 @@
   <ItemGroup>
     <Compile Include="AOP\CatchExceptionAttribute.cs" />
     <Compile Include="AOP\RunningLogAttribute.cs" />
-    <Compile Include="AOP\ThrowExAttribute.cs" />
     <Compile Include="Common\Common.cs" />
     <Compile Include="ContextPropagation\ContextReceiveBehavior.cs" />
     <Compile Include="ContextPropagation\ContextReceiveInitializer.cs" />

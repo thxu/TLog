@@ -206,6 +206,37 @@ namespace TLog.Core.Log
         }
 
         /// <summary>
+        /// 记录info信息
+        /// </summary>
+        /// <param name="logSpan">日志段</param>
+        /// <param name="paramOut">内容</param>
+        internal static void InnerInfo(LogSpan logSpan, string paramOut = "")
+        {
+            Task.Run(() =>
+            {
+                try
+                {
+                    LogBase log = new LogBase
+                    {
+                        CustomerInfo = new Dictionary<string, object>(),
+                        LogSpan = logSpan,
+                        LogLevel = LogLevel.Info,
+                    };
+                    log.LogSpan.ParamOut = paramOut;
+                    log.CustomerInfo.Add("Content", logSpan.FunctionName ?? string.Empty);
+                    if (!LogFilter(log.LogLevel))
+                    {
+                        _logger.Write(log);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    InnerTxtLog.WriteException(ex, "记录内部Info日志异常,参数：" + new { paramOut, logSpan }.ToJson());
+                }
+            });
+        }
+
+        /// <summary>
         /// 记录debug日志
         /// </summary>
         /// <param name="debugInfo">debug信息</param>
@@ -293,9 +324,14 @@ namespace TLog.Core.Log
             return res.ToString();
         }
 
-        private bool Equals(object obj)
+        /// <summary>
+        /// 隐藏原来的equals方法
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        protected  bool Equals(object obj)
         {
-            return base.Equals(obj);
+            return false;
         }
     }
 }
