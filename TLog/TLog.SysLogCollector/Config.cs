@@ -12,10 +12,10 @@ namespace TLog.SysLogCollector
         {
             get
             {
-                var tmp = ConfigurationManager.AppSettings["ElasticSearchConStr"] ?? "http://10.0.0.11:9200/";
+                var tmp = ConfigurationManager.AppSettings["ElasticSearchConStr"] ?? "http://10.0.0.9:9200/";
                 if (string.IsNullOrWhiteSpace(tmp))
                 {
-                    tmp = "http://10.0.0.11:9200/";
+                    tmp = "http://10.0.0.9:9200/";
                 }
                 return tmp;
             }

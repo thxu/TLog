@@ -23,118 +23,120 @@ namespace TLog.SysLogCollector
         {
             try
             {
-                //var traceId = "190329092502c00239014691416d841bc56d7d99ed48";
-                //var spendTime = 0;
-                //var functionName = "";
-                //var startTime = DateTime.Now.AddDays(-1);
-                //var stopTime = DateTime.Now.AddHours(1);
-                //var exStr = "";
-                //var paramIn = "";
-                //var paramOut = "";
-                //var appName = "";
-                //var logLevel = 0;
-                //var ip = "";
-                //var customerStr = "";
+                var traceId = "190329092502c00239014691416d841bc56d7d99ed48";
+                var spendTime = 10;
+                var functionName = "1";
+                var startTime = DateTime.Now.AddDays(-100);
+                var stopTime = DateTime.Now.AddHours(1);
+                var exStr = "1";
+                var paramIn = "1";
+                var paramOut = "1";
+                var appName = "1";
+                var logLevel = 10;
+                var ip = "1";
+                var customerStr = "1";
 
-                //var mustclauses = new List<QueryContainer>();
-                //if (!string.IsNullOrWhiteSpace(traceId))
-                //{
-                //    mustclauses.Add(new MatchQuery
-                //    {
-                //        Field = Infer.Field<SysLog>(f => f.TraceId),
-                //        Query = traceId
-                //    });
-                //}
+                var mustclauses = new List<QueryContainer>();
+                if (!string.IsNullOrWhiteSpace(traceId))
+                {
+                    mustclauses.Add(new MatchQuery
+                    {
+                        Field = Infer.Field<SysLog>(f => f.TraceId),
+                        Query = traceId
+                    });
+                }
 
-                //if (spendTime > 0)
-                //{
-                //    mustclauses.Add(new NumericRangeQuery
-                //    {
-                //        Field = Infer.Field<SysLog>(f => f.SpendTime),
-                //        LessThanOrEqualTo = 0,
-                //        GreaterThanOrEqualTo = spendTime,
-                //    });
-                //}
+                if (spendTime > 0)
+                {
+                    mustclauses.Add(new NumericRangeQuery
+                    {
+                        Field = Infer.Field<SysLog>(f => f.SpendTime),
+                        LessThanOrEqualTo = 0,
+                        GreaterThanOrEqualTo = spendTime,
+                    });
+                }
 
-                //if (!string.IsNullOrWhiteSpace(functionName))
-                //{
-                //    mustclauses.Add(new MatchQuery
-                //    {
-                //        Field = Infer.Field<SysLog>(f => f.FunctionName),
-                //        Query = functionName
-                //    });
-                //}
+                if (!string.IsNullOrWhiteSpace(functionName))
+                {
+                    mustclauses.Add(new MatchQuery
+                    {
+                        Field = Infer.Field<SysLog>(f => f.FunctionName),
+                        Query = functionName
+                    });
+                }
 
-                //mustclauses.Add(new DateRangeQuery()
-                //{
-                //    Field = Infer.Field<SysLog>(f => f.CreateTime),
-                //    LessThanOrEqualTo = stopTime,
-                //    GreaterThanOrEqualTo = startTime,
-                //});
-                //if (!string.IsNullOrWhiteSpace(exStr))
-                //{
-                //    mustclauses.Add(new MatchQuery
-                //    {
-                //        Field = Infer.Field<SysLog>(f => f.ExceptionInfo),
-                //        Query = exStr
-                //    });
-                //}
-                //if (!string.IsNullOrWhiteSpace(paramIn))
-                //{
-                //    mustclauses.Add(new MatchQuery
-                //    {
-                //        Field = Infer.Field<SysLog>(f => f.ParamIn),
-                //        Query = paramIn
-                //    });
-                //}
-                //if (!string.IsNullOrWhiteSpace(paramOut))
-                //{
-                //    mustclauses.Add(new MatchQuery
-                //    {
-                //        Field = Infer.Field<SysLog>(f => f.ParamOut),
-                //        Query = paramOut
-                //    });
-                //}
-                //if (!string.IsNullOrWhiteSpace(appName))
-                //{
-                //    mustclauses.Add(new MatchQuery
-                //    {
-                //        Field = Infer.Field<SysLog>(f => f.AppName),
-                //        Query = appName
-                //    });
-                //}
-                //if (!string.IsNullOrWhiteSpace(ip))
-                //{
-                //    mustclauses.Add(new TermQuery()
-                //    {
-                //        Field = Infer.Field<SysLog>(f => f.Ip),
-                //        Value = ip
-                //    });
-                //}
-                //if (!string.IsNullOrWhiteSpace(customerStr))
-                //{
-                //    mustclauses.Add(new MatchQuery
-                //    {
-                //        Field = Infer.Field<SysLog>(f => f.CustomerInfo),
-                //        Query = customerStr
-                //    });
-                //}
+                mustclauses.Add(new DateRangeQuery()
+                {
+                    Field = Infer.Field<SysLog>(f => f.CreateTime),
+                    LessThanOrEqualTo = stopTime,
+                    GreaterThanOrEqualTo = startTime,
+                });
+                if (!string.IsNullOrWhiteSpace(exStr))
+                {
+                    mustclauses.Add(new MatchQuery
+                    {
+                        Field = Infer.Field<SysLog>(f => f.ExceptionInfo),
+                        Query = exStr
+                    });
+                }
+                if (!string.IsNullOrWhiteSpace(paramIn))
+                {
+                    mustclauses.Add(new MatchQuery
+                    {
+                        Field = Infer.Field<SysLog>(f => f.ParamIn),
+                        Query = paramIn
+                    });
+                }
+                if (!string.IsNullOrWhiteSpace(paramOut))
+                {
+                    mustclauses.Add(new MatchQuery
+                    {
+                        Field = Infer.Field<SysLog>(f => f.ParamOut),
+                        Query = paramOut
+                    });
+                }
+                if (!string.IsNullOrWhiteSpace(appName))
+                {
+                    mustclauses.Add(new MatchQuery
+                    {
+                        Field = Infer.Field<SysLog>(f => f.AppName),
+                        Query = appName
+                    });
+                }
+                if (!string.IsNullOrWhiteSpace(ip))
+                {
+                    mustclauses.Add(new TermQuery()
+                    {
+                        Field = Infer.Field<SysLog>(f => f.Ip),
+                        Value = ip
+                    });
+                }
+                if (!string.IsNullOrWhiteSpace(customerStr))
+                {
+                    mustclauses.Add(new MatchQuery
+                    {
+                        Field = Infer.Field<SysLog>(f => f.CustomerInfo),
+                        Query = customerStr
+                    });
+                }
 
-                //if (logLevel > 0)
-                //{
-                //    mustclauses.Add(new TermQuery()
-                //    {
-                //        Field = Infer.Field<SysLog>(f => f.LogLevel),
-                //        Value = logLevel,
-                //    });
-                //}
+                if (logLevel > 0)
+                {
+                    mustclauses.Add(new TermQuery()
+                    {
+                        Field = Infer.Field<SysLog>(f => f.LogLevel),
+                        Value = logLevel,
+                    });
+                }
 
-                //var searchRequest = new SearchRequest<SysLog>(Nest.Indices.Index("systemlog"), Types.Type("syslog"))
-                //{
-                //    From = 0,
-                //    Size = 1000,
-                //    Query = new BoolQuery { Must = mustclauses }
-                //};
+                var searchRequest = new SearchRequest<SysLog>(Nest.Indices.Index("systemlog"), Types.Type("syslog"))
+                {
+                    From = 0,
+                    Size = 1000,
+                    Query = new BoolQuery { Must = mustclauses }
+                };
+
+                var tmp = _client.Search<SysLog>(searchRequest).Documents;
 
 
                 foreach (string logFolder in Config.Logs)
